@@ -104,7 +104,6 @@ function scriptstartoption2 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
   source new.sh
-  read -n1 -r -p "Press any key to continue..."
 }
 
 scriptstart

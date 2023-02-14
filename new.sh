@@ -18,11 +18,11 @@ while [[ ! -d "${HOME}/.bugbash/${client_name}" ]]; do
         WD="${HOME}/.bugbash/${client_name}"
         mkdir -p "${HOME}/.bugbash/${client_name}"
         echo "New directory created for ${client_name}"
-        read -rp "Do you want to set a target domain? (y/N) " yn
+        read -rp "Do you want to set a target domain? (Y/n) " yn
         case $yn in
             [Yy]* ) source addnewdomain.sh; break;;
             [Nn]* ) break;;
-            * ) break;;
+            * ) source addnewdomain.sh; break;;
         esac
         break
 
