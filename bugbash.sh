@@ -3,51 +3,142 @@
 # BugBash - Menu System
 # Insert any additional comments or description here
 
-# Define menu options
-option1="Option 1 - Description of option 1"
-option2="Option 2 - Description of option 2"
-option3="Option 3 - Description of option 3"
+#############
+#  Colours  #
+#############
 
-# Define function for menu
-function menu {
-  clear
-  echo "BugBash - Menu System"
+# Define colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
+NC='\033[0m' # No Color
+
+#############
+#  options  #
+#############
+
+#start script menu
+scriptstartoption1="${GREEN}Load${NC} - List existing targets"
+scriptstartoption2="${GREEN}New${NC} - Start a new scan"
+
+# submenu options
+suboption1="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
+suboption2="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
+suboption3="${RED}Main Menu${NC} - Back to main menu"
+
+
+#############
+#  Headers  #
+#############
+
+# Define function for menu-header
+function menu-header {
+    clear
+echo -e "${BLUE}BugBash - Menu System${NC}"
+if [[ -n "$client_name" ]]; then
   echo "---------------------"
-  echo "Select an option:"
-  echo "1) $option1"
-  echo "2) $option2"
-  echo "3) $option3"
-  echo "Q) Quit"
+  echo "Client name:   $client_name"
+fi
+if [[ -n "$WD" ]]; then
+  echo "Client folder: $WD"
+fi
+if [[ -n "$Domain" ]]; then
+  if [[ -f "${WD}/subdomains.${Domain}.txt" ]]; then
+    num_subdomains=$(wc -l < "${WD}/subdomains.${Domain}.txt")
+    echo "Domain:        $Domain (subdomains found: $num_subdomains)"
+  else
+    echo "Domain:        $Domain (no subdomains saved)"
+  fi
+fi
+echo "---------------------"
+}
+
+
+#############
+# main menu #
+#############
+
+function scriptstart-menu {
+  echo -e "${YELLOW}Select an option:${NC}"
+  echo -e "1) $scriptstartoption1"
+  echo -e "2) $scriptstartoption2"
+  echo -e "${RED}Q) Quit${NC}"
+  echo
+  read -rp "Enter selection: " choice
+}
+function scriptstart {
+# Call startscript-menu function
+while true; do
+  menu-header 
+  scriptstart-menu
+  case $choice in
+    1) scriptstartoption1 ;break;;
+    2) scriptstartoption2 ;break;;
+    Q|q) break ;;
+    *) echo -e "${RED}Invalid option. Press any key to try again.${NC}"; read -n1 -r ;;
+  esac
+done
+}
+
+
+# Define function for scriptstartoption 1
+function scriptstartoption1 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import the newscan option script
+  source load.sh
+  read -n1 -r -p "Press any key to continue..."
+}
+
+
+# Define function for Option 2
+function scriptstartoption2 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import the subdomain scan option
+  #source subdomainscan.sh
+  source new.sh
+   read -n1 -r -p "Press any key to continue..."
+}
+
+scriptstart
+
+############
+# sub menu #
+############
+
+function submenu {
+  menu-header
+  echo -e "${YELLOW}Select an option:${NC}"
+  echo -e "1) $suboption1"
+  echo -e "2) $suboption2"
+  echo -e "3) $suboption3"
+  echo -e "${RED}Q) Quit${NC}"
   echo
   read -rp "Enter selection: " choice
 }
 
 # Define function for Option 1
-function option1 {
-  # Insert code for Option 1 here
-  echo "You have selected Option 1"
-}
-
-# Define function for Option 2
-function option2 {
-  # Insert code for Option 2 here
-  echo "You have selected Option 2"
-}
-
-# Define function for Option 3
-function option3 {
-  # Insert code for Option 3 here
-  echo "You have selected Option 3"
+function suboption1 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import the subdomain scan option
+  source subdomainscan.sh
+   read -n1 -r -p "Press any key to continue..."
 }
 
 # Call menu function
 while true; do
-  menu
+  submenu
   case $choice in
-    1) option1 ;;
-    2) option2 ;;
-    3) option3 ;;
+    1) suboption1 ;;
+    2) suboption2 ;;
+    3) suboption3 ;;
     Q|q) break ;;
-    *) echo "Invalid option. Press any key to try again."; read -n1 ;;
+    *) echo -e "${RED}Invalid option. Press any key to try again.${NC}"; read -n1 -r ;;
   esac
 done
