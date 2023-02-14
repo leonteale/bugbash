@@ -45,7 +45,7 @@ if [[ -n "$Domain" ]]; then
           fi
   if [[ -f "${WD}/subdomains.${Domain}.txt" ]]; then
     num_subdomains=$(wc -l < "${WD}/subdomains.${Domain}.txt")
-    echo "Domain:        $Domain (subdomains found: $num_subdomains)"
+    echo -e "Domain:        $Domain (subdomains found: ${GREEN}$num_subdomains${NC})"
   else
     echo "Domain:        $Domain (no subdomains saved)"
   fi
@@ -143,6 +143,15 @@ function suboption2 {
   cd "$(dirname "$0")"
   # Import the subdomain scan option
   source subdomainscan.sh
+   read -n1 -r -p "Press any key to continue..."
+}
+
+# Define function for Option 2
+function suboption3 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import the subdomain scan option
+  source subdomaintakeover.sh
    read -n1 -r -p "Press any key to continue..."
 }
 
