@@ -21,14 +21,19 @@ NC='\033[0m' # No Color
 #  Headers  #
 #############
 
-# Define function for menu-header
+########### Define function for menu-header
 function menu-header {
     clear
+## Title ##
 echo -e "${BLUE}BugBash - Menu System${NC}"
+
+############## Client name ##
 if [[ -n "$client_name" ]]; then
   echo "---------------------"
   echo "Client name:   $client_name"
 fi
+
+################ Domain
 if [[ -n "$WD" ]]; then
   echo "Client folder: $WD"
 fi
@@ -40,6 +45,9 @@ if [[ -n "$Domain" ]]; then
     echo "Domain:        $Domain (no subdomains saved)"
   fi
 fi
+
+
+########### header end
 echo "---------------------"
 }
 
@@ -83,7 +91,6 @@ function scriptstartoption1 {
   cd "$(dirname "$0")"
   # Import the newscan option script
   source load.sh
-  read -n1 -r -p "Press any key to continue..."
 }
 
 
@@ -91,10 +98,8 @@ function scriptstartoption1 {
 function scriptstartoption2 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
-  # Import the subdomain scan option
-  #source subdomainscan.sh
   source new.sh
-   read -n1 -r -p "Press any key to continue..."
+  read -n1 -r -p "Press any key to continue..."
 }
 
 scriptstart
@@ -104,10 +109,10 @@ scriptstart
 ############
 
 # submenu options
-suboption1="${GREEN}Add new domain${NC} - Add a new domain (overwite existing domain)"
+suboption1="${GREEN}Update target domain${NC} - Add a new domain (overwite existing domain)"
 suboption2="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
 suboption3="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
-suboption3="${GREEN}blank${NC} - Blank"
+suboption4="${GREEN}blank${NC} - Blank"
 
 function submenu {
   menu-header
@@ -126,7 +131,6 @@ function suboption1 {
   cd "$(dirname "$0")"
   # Import the subdomain scan option
   source addnewdomain.sh
-   read -n1 -r -p "Press any key to continue..."
 }
 
 # Define function for Option 2

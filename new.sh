@@ -1,28 +1,47 @@
 read -rp "Enter the name of the client: " client_name
 
-          # Check if client name is empty
-          while [[ -z "$client_name" ]]; do
-            echo -e "${RED}Error: Client name cannot be empty.${NC}"
-            read -rp "Enter the name of the client: " client_name
-          done
+# Check if client name is empty
+while [[ -z "$client_name" ]]; do
+    echo -e "${RED}Error: Client name cannot be empty.${NC}"
+    read -rp "Enter the name of the client: " client_name
+done
 
-          # Remove any spaces or special characters from client name
-          client_name=$(echo "$client_name" | tr -dc '[:alnum:]\n\r')
+# Sanitize client name by removing spaces and special characters
+client_name=$(echo "$client_name" | tr -dc '[:alnum:]-' | tr '[:upper:]' '[:lower:]')
 
-          # Check if client folder already exists
-          while [[ -d "${HOME}/.bugbash/${client_name}" ]]; do
-            if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
-              read -rp "Domain file already exists. Do you want to keep this domain? (Y/N) " yn
-              case $yn in
-                [Yy]* ) Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt"); break;;
-                [Nn]* ) read -rp "Enter a new domain name: " Domain; break;;
-                * ) echo -e "${RED}Please answer Y or N.${NC}";;
-              esac
-            else
-              read -rp "Folder already exists. Do you want to use this folder? (Y/N) " yn
-              case $yn in
-               [Yy]* ) WD="${HOME}/.bugbash/${client_name}"; echo -e "${GREEN}Working directory set to ${HOME}/.bugbash/${client_name}.${NC}"; break;;
-               [Nn]* ) read -rp "Enter a new name for the client: " client_name;
-              esac
-            fi
-          done
+# Check if client folder already exists
+while [[ ! -d "${HOME}/.bugbash/${client_name}" ]]; do
+
+  # Create the directory for the new client name
+        echo "Creating directory ${HOME}/.bugbash/${client_name}"
+        WD="${HOME}/.bugbash/${client_name}"
+        Domain=""
+        mkdir -p "${HOME}/.bugbash/${client_name}"
+        echo "New directory created for ${client_name}"
+        read -rp "Do you want to set a target domain? (Y/N) " yn
+        case $yn in
+            [Yy]* ) source addnewdomain.sh; break;;
+            [Nn]* ) break;;
+        esac
+        break
+
+    if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
+        Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt")
+        echo "This customer name already exists and has a domain: $Domain" 
+        read -rp "Do you want to pick an existing client folder? (Y/N) " yn
+        case $yn in
+            [Yy]* ) source load.sh; break;;
+            [Nn]* ) read -rp "Enter a NEW name for the client: " client_name;
+                    # Create the directory for the new client name
+                    echo "Creating directory ${HOME}/.bugbash/${client_name}"
+                    WD="${HOME}/.bugbash/${client_name}"
+                    Domain=""
+                    mkdir -p "${HOME}/.bugbash/${client_name}"
+                    echo "New directory created for ${client_name}"
+                    break;;
+        esac
+    else
+        # Create the directory for the new client name
+        echo "else statment"
+    fi
+done

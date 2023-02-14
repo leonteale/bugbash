@@ -13,8 +13,7 @@
           done
 
           client_name=${client_folders[$((choice-1))]}
-          WD="${HOME}/.bugbash/${client_name}"
-          echo -e "${GREEN}Working directory set to ${HOME}/.bugbash/${client_name}.${NC}"
+          WD="${HOME}/.bugbash/${client_name}";
 
           if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
               Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt");
