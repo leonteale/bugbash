@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # BugBash - Menu System
-# Insert any additional comments or description here
+
 
 #############
 #  Colours  #
