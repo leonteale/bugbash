@@ -38,6 +38,11 @@ if [[ -n "$WD" ]]; then
   echo "Client folder: $WD"
 fi
 if [[ -n "$Domain" ]]; then
+  if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
+              Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt");
+            else
+              Domain="No domain set"
+          fi
   if [[ -f "${WD}/subdomains.${Domain}.txt" ]]; then
     num_subdomains=$(wc -l < "${WD}/subdomains.${Domain}.txt")
     echo "Domain:        $Domain (subdomains found: $num_subdomains)"

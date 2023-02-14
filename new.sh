@@ -13,22 +13,23 @@ client_name=$(echo "$client_name" | tr -dc '[:alnum:]-' | tr '[:upper:]' '[:lowe
 while [[ ! -d "${HOME}/.bugbash/${client_name}" ]]; do
 
   # Create the directory for the new client name
+
         echo "Creating directory ${HOME}/.bugbash/${client_name}"
         WD="${HOME}/.bugbash/${client_name}"
-        Domain=""
         mkdir -p "${HOME}/.bugbash/${client_name}"
         echo "New directory created for ${client_name}"
-        read -rp "Do you want to set a target domain? (Y/N) " yn
+        read -rp "Do you want to set a target domain? (y/N) " yn
         case $yn in
             [Yy]* ) source addnewdomain.sh; break;;
             [Nn]* ) break;;
+            * ) break;;
         esac
         break
 
     if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
         Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt")
         echo "This customer name already exists and has a domain: $Domain" 
-        read -rp "Do you want to pick an existing client folder? (Y/N) " yn
+        read -rp "Do you want to pick an existing client folder? (Y/n) " yn
         case $yn in
             [Yy]* ) source load.sh; break;;
             [Nn]* ) read -rp "Enter a NEW name for the client: " client_name;
@@ -39,6 +40,7 @@ while [[ ! -d "${HOME}/.bugbash/${client_name}" ]]; do
                     mkdir -p "${HOME}/.bugbash/${client_name}"
                     echo "New directory created for ${client_name}"
                     break;;
+            * ) source load.sh; break;;
         esac
     else
         # Create the directory for the new client name
