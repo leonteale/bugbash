@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # BugBash - Menu System
-# Insert any additional comments or description here
+
+
+#############
+#  Colours  #
+#############
 
 # Define colors
 RED='\033[0;31m'
@@ -13,84 +17,152 @@ CYAN='\033[0;36m'
 WHITE='\033[0;37m'
 NC='\033[0m' # No Color
 
-# Define menu options
-option1="${GREEN}New Scan${NC} - Set up new scan"
-option2="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
-option3="${GREEN}Option 3${NC} - Description of option 3"
-option4="${GREEN}Option 4${NC} - option 4"
+#############
+#  Headers  #
+#############
 
-# Define function for menu
-function menu {
-  clear
+########### Define function for menu-header
+function menu-header {
+    clear
+## Title ##
 echo -e "${BLUE}BugBash - Menu System${NC}"
+
+############## Client name ##
 if [[ -n "$client_name" ]]; then
   echo "---------------------"
   echo "Client name:   $client_name"
 fi
+
+################ Domain
 if [[ -n "$WD" ]]; then
   echo "Client folder: $WD"
 fi
 if [[ -n "$Domain" ]]; then
+  if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
+              Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt");
+            else
+              Domain="No domain set"
+          fi
   if [[ -f "${WD}/subdomains.${Domain}.txt" ]]; then
     num_subdomains=$(wc -l < "${WD}/subdomains.${Domain}.txt")
-    echo "Domain:        $Domain (subdomains found: $num_subdomains)"
+    echo -e "Domain:        $Domain (subdomains found: ${GREEN}$num_subdomains${NC})"
   else
     echo "Domain:        $Domain (no subdomains saved)"
   fi
 fi
-echo "---------------------"
 
+
+########### header end
+echo "---------------------"
+}
+
+
+#############
+# main menu #
+#############
+
+
+#start script menu
+scriptstartoption1="${GREEN}Load${NC} - List existing targets"
+scriptstartoption2="${GREEN}New${NC} - Start a new scan"
+
+
+function scriptstart-menu {
   echo -e "${YELLOW}Select an option:${NC}"
-  echo -e "1) $option1"
-  echo -e "2) $option2"
-  echo -e "3) $option3"
-  echo -e "4) $option4"
+  echo -e "1) $scriptstartoption1"
+  echo -e "2) $scriptstartoption2"
+  echo -e "${RED}Q) Quit${NC}"
+  echo
+  read -rp "Enter selection: " choice
+}
+function scriptstart {
+# Call startscript-menu function
+while true; do
+  menu-header 
+  scriptstart-menu
+  case $choice in
+    1) scriptstartoption1 ;break;;
+    2) scriptstartoption2 ;break;;
+    Q|q) break ;;
+    *) echo -e "${RED}Invalid option. Press any key to try again.${NC}"; read -n1 -r ;;
+  esac
+done
+}
+
+
+# Define function for scriptstartoption 1
+function scriptstartoption1 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import the newscan option script
+  source load.sh
+}
+
+
+# Define function for Option 2
+function scriptstartoption2 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  source new.sh
+}
+
+scriptstart
+
+############
+# sub menu #
+############
+
+# submenu options
+suboption1="${GREEN}Update target domain${NC} - Add a new domain (overwite existing domain)"
+suboption2="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
+suboption3="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
+suboption4="${GREEN}blank${NC} - Blank"
+
+function submenu {
+  menu-header
+  echo -e "${YELLOW}Select an option:${NC}"
+  echo -e "1) $suboption1"
+  echo -e "2) $suboption2"
+  echo -e "3) $suboption3"
   echo -e "${RED}Q) Quit${NC}"
   echo
   read -rp "Enter selection: " choice
 }
 
 # Define function for Option 1
-function option1 {
+function suboption1 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
-  # Import the newscan option script
-  source newscan.sh
+  # Import the subdomain scan option
+  source addnewdomain.sh
 }
 
-
 # Define function for Option 2
-function option2 {
+function suboption2 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
   # Import the subdomain scan option
   source subdomainscan.sh
+   read -n1 -r -p "Press any key to continue..."
 }
 
-# Define function for Option 3
-function option3 {
-  # Insert code for Option 3 here
-  echo -e "${CYAN}You have selected Option 3${NC}"
-  read -n1 -r -p "Press any key to continue..."
-}
-
-# Define function for Option 4
-function option4 {
-  # Insert code for Option 4 here
-  echo -e "${YELLOW}You have selected Option 4${NC}"
-  read -n1 -r -p "Press any key to continue..."
+# Define function for Option 2
+function suboption3 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import the subdomain scan option
+  source subdomaintakeover.sh
+   read -n1 -r -p "Press any key to continue..."
 }
 
 # Call menu function
 while true; do
-  menu
+  submenu
   case $choice in
-    1) option1 ;;
-    2) option2 ;;
-    3) option3 ;;
-    4) option4 ;;
+    1) suboption1 ;;
+    2) suboption2 ;;
+    3) suboption3 ;;
     Q|q) break ;;
     *) echo -e "${RED}Invalid option. Press any key to try again.${NC}"; read -n1 -r ;;
   esac
 done
-

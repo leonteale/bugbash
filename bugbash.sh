@@ -24,37 +24,40 @@ NC='\033[0m' # No Color
 ########### Define function for menu-header
 function menu-header {
     clear
-## Title ##
-echo -e "${BLUE}BugBash - Menu System${NC}"
+    # Title
+    echo -e "${BLUE}BugBash - Menu System${NC}"
+    echo "---------------------"
 
-############## Client name ##
-if [[ -n "$client_name" ]]; then
-  echo "---------------------"
-  echo "Client name:   $client_name"
-fi
+    # Client name
+    if [[ -n "$client_name" ]]; then
+        echo "Client name:   $client_name"
+    fi
 
-################ Domain
-if [[ -n "$WD" ]]; then
-  echo "Client folder: $WD"
-fi
-if [[ -n "$Domain" ]]; then
-  if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
-              Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt");
-            else
-              Domain="No domain set"
-          fi
-  if [[ -f "${WD}/subdomains.${Domain}.txt" ]]; then
-    num_subdomains=$(wc -l < "${WD}/subdomains.${Domain}.txt")
-    echo -e "Domain:        $Domain (subdomains found: ${GREEN}$num_subdomains${NC})"
-  else
-    echo "Domain:        $Domain (no subdomains saved)"
-  fi
-fi
+    # Client folder and domain
+    if [[ -n "$WD" && -n "$Domain" ]]; then
+        if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
+            Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt")
+        else
+            Domain="No domain set"
+        fi
 
+        if [[ -f "${WD}/subdomains.${Domain}.txt" ]]; then
+            num_subdomains=$(wc -l < "${WD}/subdomains.${Domain}.txt")
+            echo "Client folder: $WD"
+            echo -e "Domain:        $Domain (subdomains found: ${GREEN}$num_subdomains${NC})"
+        else
+            echo "Client folder: $WD"
+            echo "Domain:        $Domain (no subdomains saved)"
+        fi
+    elif [[ -n "$WD" ]]; then
+        echo "Client folder: $WD"
+    elif [[ -n "$Domain" ]]; then
+        echo "Domain:        $Domain"
+    fi
 
-########### header end
-echo "---------------------"
+    echo "---------------------"
 }
+
 
 
 #############
