@@ -59,7 +59,6 @@ function menu-header {
 }
 
 
-
 #############
 # main menu #
 #############
@@ -119,7 +118,8 @@ scriptstart
 suboption1="${GREEN}Update target domain${NC} - Add a new domain (overwite existing domain)"
 suboption2="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
 suboption3="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
-suboption4="${GREEN}blank${NC} - Blank"
+suboption4="${GREEN}Email & user enum${NC} - Enumerate emails and users"
+suboption5="${GREEN}Password search${NC} - Private access only Usually takes about 20 Minutes"
 
 function submenu {
   menu-header
@@ -127,12 +127,14 @@ function submenu {
   echo -e "1) $suboption1"
   echo -e "2) $suboption2"
   echo -e "3) $suboption3"
+  echo -e "4) $suboption4"
+  echo -e "5) $suboption5"
   echo -e "${RED}Q) Quit${NC}"
   echo
   read -rp "Enter selection: " choice
 }
 
-# Define function for Option 1
+# Define function for Option 1 - add new target domain
 function suboption1 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
@@ -140,7 +142,7 @@ function suboption1 {
   source addnewdomain.sh
 }
 
-# Define function for Option 2
+# Define function for Option 2 - subdomain finder 
 function suboption2 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
@@ -149,12 +151,28 @@ function suboption2 {
    read -n1 -r -p "Press any key to continue..."
 }
 
-# Define function for Option 2
+# Define function for Option 3 - subdomain takeover
 function suboption3 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
   # Import the subdomain scan option
   source subdomaintakeover.sh
+   read -n1 -r -p "Press any key to continue..."
+}
+
+# Define function for Option 4 - directory brute force
+function suboption4 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import directorybruteforce.sh
+   read -n1 -r -p "Press any key to continue..."
+}
+
+# Define function for Option 5 - Leak search
+function suboption5 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  source leaksearch.sh
    read -n1 -r -p "Press any key to continue..."
 }
 
@@ -165,6 +183,8 @@ while true; do
     1) suboption1 ;;
     2) suboption2 ;;
     3) suboption3 ;;
+    4) suboption4 ;;
+    5) suboption5 ;;
     Q|q) break ;;
     *) echo -e "${RED}Invalid option. Press any key to try again.${NC}"; read -n1 -r ;;
   esac

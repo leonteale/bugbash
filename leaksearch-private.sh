@@ -1,0 +1,1 @@
+/home/leon/.local/bin/h8mail -t $Domain -sk -lb /Wordlists/COMB/CompilationOfManyBreaches/ --loose > /tmp/$Domain&
