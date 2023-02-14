@@ -15,3 +15,9 @@
           client_name=${client_folders[$((choice-1))]}
           WD="${HOME}/.bugbash/${client_name}"
           echo -e "${GREEN}Working directory set to ${HOME}/.bugbash/${client_name}.${NC}"
+
+          if [[ -f "${HOME}/.bugbash/${client_name}/${client_name}.txt" ]]; then
+              Domain=$(cat "${HOME}/.bugbash/${client_name}/${client_name}.txt");
+            else
+              Domain="No domain set"
+          fi

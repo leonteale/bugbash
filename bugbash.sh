@@ -18,20 +18,6 @@ WHITE='\033[0;37m'
 NC='\033[0m' # No Color
 
 #############
-#  options  #
-#############
-
-#start script menu
-scriptstartoption1="${GREEN}Load${NC} - List existing targets"
-scriptstartoption2="${GREEN}New${NC} - Start a new scan"
-
-# submenu options
-suboption1="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
-suboption2="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
-suboption3="${RED}Main Menu${NC} - Back to main menu"
-
-
-#############
 #  Headers  #
 #############
 
@@ -61,6 +47,12 @@ echo "---------------------"
 #############
 # main menu #
 #############
+
+
+#start script menu
+scriptstartoption1="${GREEN}Load${NC} - List existing targets"
+scriptstartoption2="${GREEN}New${NC} - Start a new scan"
+
 
 function scriptstart-menu {
   echo -e "${YELLOW}Select an option:${NC}"
@@ -110,6 +102,11 @@ scriptstart
 ############
 # sub menu #
 ############
+
+# submenu options
+suboption1="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
+suboption2="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
+suboption3="${GREEN}blank${NC} - Blank"
 
 function submenu {
   menu-header
