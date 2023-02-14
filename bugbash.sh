@@ -104,8 +104,9 @@ scriptstart
 ############
 
 # submenu options
-suboption1="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
-suboption2="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
+suboption1="${GREEN}Add new domain${NC} - Add a new domain (overwite existing domain)"
+suboption2="${GREEN}Sub Domain Scan${NC} - Perform a subdomain scan"
+suboption3="${GREEN}Subdomain takeover${NC} - Perform subdomain takeover"
 suboption3="${GREEN}blank${NC} - Blank"
 
 function submenu {
@@ -121,6 +122,15 @@ function submenu {
 
 # Define function for Option 1
 function suboption1 {
+  # Change the current working directory to the directory where the script was run from
+  cd "$(dirname "$0")"
+  # Import the subdomain scan option
+  source addnewdomain.sh
+   read -n1 -r -p "Press any key to continue..."
+}
+
+# Define function for Option 2
+function suboption2 {
   # Change the current working directory to the directory where the script was run from
   cd "$(dirname "$0")"
   # Import the subdomain scan option
