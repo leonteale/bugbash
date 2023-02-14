@@ -1,7 +1,7 @@
 # check if subtake is installed
 if ! which subtake >/dev/null 2>&1; then
   echo "subtake not found, installing..."
-  sudo apt-get -y install subfinder
+  sudo apt-get -y install subtake
 fi
 
 # check if subtake is installed and run it
