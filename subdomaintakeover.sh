@@ -6,7 +6,7 @@ if ! which subtake >/dev/null 2>&1; then
   		sudo apt-get install -y golang-go
 	fi
   echo "subtake not found, installing..."
-  go get github.com/jakejarvis/subtake
+  go install github.com/jakejarvis/subtake@latest
 fi
 
 # check if subtake is installed and run it
