@@ -7,6 +7,7 @@ if ! which subtake >/dev/null 2>&1; then
 	fi
   echo "subtake not found, installing..."
   go install github.com/jakejarvis/subtake@latest
+  go get github.com/jakejarvis/subtake
 fi
 
 # check if subtake is installed and run it
